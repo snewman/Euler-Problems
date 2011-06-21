@@ -47,3 +47,14 @@
      (euler-fib-sum 4000000))
   ([limit]
      (apply +  (filter even? (take-while #(< % limit) (fib))))))
+
+
+(defn prime?
+  "Could refine this to limit the divisors to the sqrt of x"
+  [x]
+  (not-any? #(zero? (mod x %)) (range 2 (dec x))))
+
+(defn primes
+  "Generates an infinite list of prime numbers. Probably highly inefficient."
+  []
+  (filter prime? (iterate inc 2)))
