@@ -35,3 +35,15 @@
       (euler-3 1000))
   ([upper]
      (->> (range upper) (filter (divides-any 3 5)) (apply +))))
+
+(defn fib
+  ([]
+     (fib 0N 1N))
+  ([x y]
+     (lazy-seq (cons (+ x y) (fib y (+ x y))))))
+
+(defn euler-fib-sum
+  ([]
+     (euler-fib-sum 4000000))
+  ([limit]
+     (apply +  (filter even? (take-while #(< % limit) (fib))))))
