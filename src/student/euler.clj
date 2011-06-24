@@ -71,3 +71,16 @@
 (defn palindrome?
   [string]
   (= string (apply str (reverse string))))
+
+(defn prodcuts
+  [bound]
+  (flatten (for [x (range 1 (dec bound))]
+             (for [y (range 1 (dec bound))]
+               (* x y)))))
+
+(defn euler-largest-palindrome
+  ( []
+      (euler-largest-palindrome 1000))
+  ( [bound]
+      (apply max (map #(Integer. %)
+                      (filter palindrome? (map str (prodcuts bound)))))))
