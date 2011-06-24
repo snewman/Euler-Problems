@@ -3,6 +3,7 @@
   :dependencies [[org.clojure/clojure "1.3.0-master-SNAPSHOT"]
                  [org.clojure/tools.logging "0.1.2"]
                  [org.clojure/data.json "0.1.0"]
+                 [criterium "0.1.0"]
                  [ring/ring-jetty-adapter "0.3.7" :exclusions [org.clojure/clojure
                                                                org.clojure/clojure-contrib]]
                  [compojure "0.6.3" :exclusions [org.clojure/clojure]]

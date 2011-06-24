@@ -1,4 +1,5 @@
-(ns student.euler)
+(ns student.euler
+  (:import java.lang.Math))
 
 (defn divides?
   [dividend divisor]
@@ -48,13 +49,25 @@
   ([limit]
      (apply +  (filter even? (take-while #(< % limit) (fib))))))
 
+(defn divisible?
+  [x divisor]
+  (zero? (mod x divisor)))
 
 (defn prime?
   "Could refine this to limit the divisors to the sqrt of x"
   [x]
-  (not-any? #(zero? (mod x %)) (range 2 (dec x))))
+  (not-any? #(divisible? x %) (range 2 (dec x))))
 
 (defn primes
   "Generates an infinite list of prime numbers. Probably highly inefficient."
   []
-  (filter prime? (iterate inc 2)))
+  (let [odd-nums (filter odd? (iterate inc 3))]
+    (conj (filter prime? odd-nums) 2)))
+
+(defn euler-prime-factor
+  [num]
+  ( filter #(divisible? num %) (take-while #(< % num) (primes))))
+
+(defn palindrome?
+  [string]
+  (= string (apply str (reverse string))))
