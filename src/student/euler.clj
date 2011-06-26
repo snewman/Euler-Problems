@@ -84,3 +84,12 @@
   ( [bound]
       (apply max (map #(Integer. %)
                       (filter palindrome? (map str (prodcuts bound)))))))
+
+(defn euler-divisible-by-range
+  ([]
+     (euler-divisible-by-range (range 1 21)))
+  ([range]
+     (loop [x 1]
+       (if (every? #(divisible? x %) range)
+         x
+         (recur (inc x))))))
