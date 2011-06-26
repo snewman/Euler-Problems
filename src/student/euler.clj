@@ -93,3 +93,45 @@
        (if (every? #(divisible? x %) range)
          x
          (recur (inc x))))))
+
+(defn sum
+  [coll]
+  (apply + coll))
+
+"Had to hack in a load of clojure.contrib.math here - should pull that out when I work out where it has gone in 1.3"
+(derive ::integer ::exact)
+(derive java.lang.Integer ::integer)
+(derive java.math.BigInteger ::integer)
+(derive java.lang.Long ::integer)
+(derive java.math.BigDecimal ::exact)
+(derive clojure.lang.Ratio ::exact)
+(derive java.lang.Double ::inexact)
+(derive java.lang.Float ::inexact)
+
+(defmulti #^{:arglists '([base pow])
+	     :doc "(expt base pow) is base to the pow power.
+Returns an exact number if the base is an exact number and the power is an integer, otherwise returns a double."}
+  expt (fn [x y] [(class x) (class y)]))
+
+(defn- expt-int [base pow]
+  (loop [n pow, y (num 1), z base]
+    (let [t (bit-and n 1), n (bit-shift-right n 1)]
+      (cond
+       (zero? t) (recur n y (* z z))
+       (zero? n) (* z y)
+       :else (recur n (* z y) (* z z))))))
+
+(defmethod expt [::exact ::integer] [base pow]
+  (cond
+   (pos? pow) (expt-int base pow)
+   (zero? pow) 1
+   :else (/ 1 (expt-int base (- pow)))))
+
+(defmethod expt :default [base pow] (Math/pow base pow))
+
+(defn euler-sum-of-sqares
+  " Problem 6. Determines the difference between the sum of the squares of a range, and the square of the sum of the range" 
+  ([]
+     (euler-sum-of-sqares (range 1 101)))
+  ([range]
+     (- (expt (sum range) 2) (sum (map #(expt % 2) range)))))
