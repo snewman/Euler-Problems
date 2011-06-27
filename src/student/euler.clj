@@ -147,3 +147,35 @@ Returns an exact number if the base is an exact number and the power is an integ
                    (lazy-seq (cons (* a b c d e) (product (drop 1 full-list)))))
                  )]
          (apply max (product digits))))))
+
+(defn triangle-numbers
+  ([]
+     (triangle-numbers 0 1))
+  ([previous-num x]
+     (let [triangle-num (+ previous-num x)]
+       (lazy-seq (cons triangle-num (triangle-numbers triangle-num (inc x)))))))
+
+(defn divisors
+  "Works out the whole number divisors of the given value.
+     foreach number up to sqrt of num
+      if divisible, add disvisor and add result of division (e.g. 10/2 = 5, so add 2 & 5)"
+  [num]
+  (remove nil? (flatten (map #(if (divisible? num %) [% (quot num %)]) (range 1 (Math/sqrt num))))))
+
+(defn problem-12-triangle-divisors
+  "Works out which triangle number has the specified number of divisors"
+  ([]
+     (problem-12-triangle-divisors 500))
+  ([target-divisors]
+     (take 1  (filter #(>= (count (divisors %)) target-divisors) (triangle-numbers)))))
+
+
+
+
+
+
+
+
+
+
+
